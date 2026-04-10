@@ -4,13 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Disney XD Web</title>
-    <link rel="manifest" href="manifest.json">
     <style>
         body {
             margin: 0;
             padding: 0;
-            background: #0d1f3a; /* Azul oscuro de respaldo */
-            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('Fondo geométrico retro de neón.jpg');
+            background: #0d1f3a;
+            background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('Fondo geométrico retro de neón.jpg');
             background-size: cover;
             background-position: center;
             height: 100vh;
@@ -23,28 +22,21 @@
             overflow: hidden;
         }
 
-        /* LOGO TEXTO VERDE NEÓN */
+        /* LOGO VERDE NEÓN */
         .logo-xd {
-            font-size: 80px;
+            font-size: 70px;
             color: #00FF00;
-            text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00, 0 0 40px #00FF00;
-            letter-spacing: -5px;
+            text-shadow: 0 0 15px #00FF00, 0 0 30px #00FF00;
+            font-style: italic;
             margin-bottom: 20px;
             text-transform: uppercase;
-            font-style: italic;
-            animation: glow 1.5s ease-in-out infinite alternate;
-        }
-
-        @keyframes glow {
-            from { text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00; }
-            to { text-shadow: 0 0 20px #00FF00, 0 0 40px #00FF00, 0 0 60px #00FF00; }
         }
 
         .menu {
             display: flex;
             flex-direction: column;
             gap: 15px;
-            width: 300px;
+            width: 280px;
         }
 
         .btn {
@@ -58,45 +50,73 @@
             cursor: pointer;
             text-decoration: none;
             text-align: center;
-            text-transform: uppercase;
             transition: 0.3s;
         }
 
-        .btn:hover {
-            background: white;
-            transform: scale(1.05);
-            box-shadow: 0 0 20px #00FF00;
-        }
+        .btn:hover { background: white; transform: scale(1.05); }
 
-        /* SECCIÓN DE JUEGOS */
-        #panel-juegos {
-            display: none;
-            background: rgba(0, 0, 0, 0.9);
-            border: 2px solid #00FF00;
-            padding: 20px;
+        /* --- VENTANA DEL JUEGO (EL FRAME) --- */
+        #game-window {
+            display: none; /* Oculto al principio */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            height: 85%;
+            background: #000;
+            border: 4px solid #00FF00;
             border-radius: 15px;
+            z-index: 100;
+            box-shadow: 0 0 50px rgba(0, 255, 0, 0.5);
+        }
+
+        /* BOTÓN DE CERRAR VENTANA */
+        #close-btn {
             position: absolute;
-            width: 80%;
-            max-width: 400px;
-            z-index: 10;
+            top: -15px;
+            right: -15px;
+            background: red;
+            color: white;
+            border: 2px solid white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 101;
         }
 
-        .grid-juegos {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 10px;
         }
 
-        .btn-game {
+        /* LISTA DE BOTONES DE JUEGOS */
+        #lista-juegos {
+            display: none;
+            margin-top: 15px;
+            background: rgba(0,0,0,0.8);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #00FF00;
+        }
+
+        .btn-mini {
+            display: block;
             background: #2b4f8a;
             color: white;
-            padding: 10px;
+            padding: 8px;
+            margin: 5px 0;
             text-decoration: none;
-            border-radius: 5px;
             font-size: 14px;
+            border-radius: 5px;
+            border: none;
+            width: 100%;
+            cursor: pointer;
         }
-
-        .btn-game:hover { background: #00FF00; color: black; }
     </style>
 </head>
 <body>
@@ -104,44 +124,42 @@
     <div class="logo-xd">DISNEY XD</div>
 
     <div class="menu">
-        <a href="https://sites.google.com/view/disneyxdlatam/minecraft-1-18" class="btn">Empezar a ver</a>
+        <a href="https://sites.google.com/view/disneyxdlatam/minecraft-1-18" class="btn">Ver Disney XD</a>
         
-        <button class="btn" onclick="toggleJuegos()">Juegos 🕹️</button>
-        
-        <button id="installBtn" class="btn" style="background:#ff00ff; color:white; display:none;">Instalar App</button>
+        <button class="btn" onclick="mostrarMenuJuegos()">🎮 Juegos</button>
+
+        <div id="lista-juegos">
+            <button class="btn-mini" onclick="abrirJuego('https://eaglercraft.com/mc/1.8.8')">Eaglercraft 1.8.8</button>
+            <button class="btn-mini" onclick="abrirJuego('https://www.retrogames.cc/embed/40237-sonic-the-hedgehog-2-world.html')">Sonic Retro</button>
+            <button class="btn-mini" onclick="abrirJuego('https://sites.google.com/site/unblockedgames77/power-rangers')">Power Rangers</button>
+        </div>
     </div>
 
-    <div id="panel-juegos">
-        <h3 style="color:#00FF00; margin-top:0;">SELECCIONA JUEGO</h3>
-        <div class="grid-juegos">
-            <a href="TU_LINK_AQUÍ" class="btn-game">Sonic X</a>
-            <a href="TU_LINK_AQUÍ" class="btn-game">Power Rangers</a>
-            <a href="TU_LINK_AQUÍ" class="btn-game">Pucca</a>
-            <a href="TU_LINK_AQUÍ" class="btn-game">Eaglercraft</a>
-        </div>
-        <button onclick="toggleJuegos()" style="margin-top:15px; color:red; background:none; border:none; cursor:pointer;">[ CERRAR ]</button>
+    <div id="game-window">
+        <button id="close-btn" onclick="cerrarJuego()">X</button>
+        <iframe id="game-frame" src=""></iframe>
     </div>
 
     <script>
-        function toggleJuegos() {
-            let p = document.getElementById('panel-juegos');
-            p.style.display = (p.style.display === 'block') ? 'none' : 'block';
+        // Muestra u oculta la lista de botones
+        function mostrarMenuJuegos() {
+            let menu = document.getElementById('lista-juegos');
+            menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
         }
 
-        // Script de Instalación
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            document.getElementById('installBtn').style.display = 'block';
-        });
+        // Función para abrir el juego en la ventana
+        function abrirJuego(url) {
+            document.getElementById('game-frame').src = url;
+            document.getElementById('game-window').style.display = 'block';
+            document.getElementById('lista-juegos').style.display = 'none';
+        }
 
-        document.getElementById('installBtn').addEventListener('click', () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt = null;
-            }
-        });
+        // Función para cerrar y detener el juego
+        function cerrarJuego() {
+            document.getElementById('game-window').style.display = 'none';
+            document.getElementById('game-frame').src = ""; // Esto apaga el sonido del juego al cerrar
+        }
     </script>
+
 </body>
 </html>
