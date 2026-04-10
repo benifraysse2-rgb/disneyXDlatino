@@ -3,131 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Disney XD Web | Oficial</title>
+    <title>Disney XD Web</title>
+    <link rel="manifest" href="manifest.json">
     <style>
-        /* CONFIGURACIÓN DEL FONDO */
         body {
             margin: 0;
             padding: 0;
+            background: #0d1f3a; /* Azul oscuro de respaldo */
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('Fondo geométrico retro de neón.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            background: url('Fondo geométrico retro de neón.jpg') no-repeat center center fixed;
-            background-size: cover;
             font-family: 'Arial Black', sans-serif;
+            color: white;
             overflow: hidden;
         }
 
-        /* LOGO CON EFECTO DE FLOTAR */
-        .logo-container img {
-            width: 300px;
-            filter: drop-shadow(0 0 15px #00FF00);
-            animation: flotar 3s ease-in-out infinite;
+        /* LOGO TEXTO VERDE NEÓN */
+        .logo-xd {
+            font-size: 80px;
+            color: #00FF00;
+            text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00, 0 0 40px #00FF00;
+            letter-spacing: -5px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            font-style: italic;
+            animation: glow 1.5s ease-in-out infinite alternate;
         }
 
-        @keyframes flotar {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00; }
+            to { text-shadow: 0 0 20px #00FF00, 0 0 40px #00FF00, 0 0 60px #00FF00; }
         }
 
-        /* CONTENEDOR DE BOTONES */
         .menu {
-            margin-top: 30px;
             display: flex;
             flex-direction: column;
             gap: 15px;
-            text-align: center;
+            width: 300px;
         }
 
-        /* ESTILO DE BOTONES XD */
         .btn {
-            background: #00FF00; /* Verde Neón */
+            background: #00FF00;
             color: black;
-            padding: 15px 30px;
+            padding: 15px;
             border: none;
-            border-radius: 50px;
-            font-size: 1.2rem;
+            border-radius: 10px;
+            font-size: 18px;
             font-weight: bold;
-            text-transform: uppercase;
             cursor: pointer;
             text-decoration: none;
-            box-shadow: 0 5px 0 #008800;
-            transition: all 0.2s;
+            text-align: center;
+            text-transform: uppercase;
+            transition: 0.3s;
         }
 
         .btn:hover {
-            transform: scale(1.1);
-            background: #ffffff;
+            background: white;
+            transform: scale(1.05);
             box-shadow: 0 0 20px #00FF00;
         }
 
-        .btn:active {
-            transform: translateY(5px);
-            box-shadow: 0 0 0;
-        }
-
-        /* SECCIÓN DE JUEGOS (OCULTA POR DEFECTO) */
-        #seccion-juegos {
+        /* SECCIÓN DE JUEGOS */
+        #panel-juegos {
             display: none;
-            margin-top: 20px;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #00FF00;
             padding: 20px;
             border-radius: 15px;
-            border: 2px solid #00FF00;
+            position: absolute;
+            width: 80%;
+            max-width: 400px;
+            z-index: 10;
         }
 
-        .lista-juegos {
+        .grid-juegos {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
         }
 
-        .btn-juego {
-            background: #8a2be2; /* Morado Jetix/XD */
+        .btn-game {
+            background: #2b4f8a;
             color: white;
             padding: 10px;
-            font-size: 0.9rem;
-            border-radius: 5px;
             text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
         }
+
+        .btn-game:hover { background: #00FF00; color: black; }
     </style>
 </head>
 <body>
 
-    <div class="logo-container">
-        <img src="Logo de Disney XD en estilo retrofuturista.jpg" alt="Disney XD Logo">
-    </div>
+    <div class="logo-xd">DISNEY XD</div>
 
     <div class="menu">
-        <a href="https://sites.google.com/view/disneyxdlatam/minecraft-1-18" class="btn">
-            Empezar a ver Disney XD
-        </a>
+        <a href="https://sites.google.com/view/disneyxdlatam/minecraft-1-18" class="btn">Empezar a ver</a>
+        
+        <button class="btn" onclick="toggleJuegos()">Juegos 🕹️</button>
+        
+        <button id="installBtn" class="btn" style="background:#ff00ff; color:white; display:none;">Instalar App</button>
+    </div>
 
-        <button class="btn" style="background: #ffffff;" onclick="mostrarJuegos()">
-            🎮 Juegos
-        </button>
-
-        <div id="seccion-juegos">
-            <div class="lista-juegos">
-                <a href="#" class="btn-juego">Sonic X</a>
-                <a href="#" class="btn-juego">Power Rangers</a>
-                <a href="#" class="btn-juego">Pucca</a>
-                <a href="#" class="btn-juego">Eaglercraft</a>
-            </div>
-            <button onclick="cerrarJuegos()" style="margin-top:10px; background:none; color:red; border:none; cursor:pointer;">[Cerrar]</button>
+    <div id="panel-juegos">
+        <h3 style="color:#00FF00; margin-top:0;">SELECCIONA JUEGO</h3>
+        <div class="grid-juegos">
+            <a href="TU_LINK_AQUÍ" class="btn-game">Sonic X</a>
+            <a href="TU_LINK_AQUÍ" class="btn-game">Power Rangers</a>
+            <a href="TU_LINK_AQUÍ" class="btn-game">Pucca</a>
+            <a href="TU_LINK_AQUÍ" class="btn-game">Eaglercraft</a>
         </div>
+        <button onclick="toggleJuegos()" style="margin-top:15px; color:red; background:none; border:none; cursor:pointer;">[ CERRAR ]</button>
     </div>
 
     <script>
-        function mostrarJuegos() {
-            document.getElementById('seccion-juegos').style.display = 'block';
+        function toggleJuegos() {
+            let p = document.getElementById('panel-juegos');
+            p.style.display = (p.style.display === 'block') ? 'none' : 'block';
         }
-        function cerrarJuegos() {
-            document.getElementById('seccion-juegos').style.display = 'none';
-        }
-    </script>
 
+        // Script de Instalación
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installBtn').style.display = 'block';
+        });
+
+        document.getElementById('installBtn').addEventListener('click', () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt = null;
+            }
+        });
+    </script>
 </body>
 </html>
