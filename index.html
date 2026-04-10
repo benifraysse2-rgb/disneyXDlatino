@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Disney XD Web</title>
+    <title>Disney XD Web - Juegos</title>
     <style>
         body {
             margin: 0;
             padding: 0;
             background: #0d1f3a;
+            /* Fondo de respaldo por si no carga la imagen */
             background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('Fondo geométrico retro de neón.jpg');
             background-size: cover;
             background-position: center;
@@ -22,100 +23,126 @@
             overflow: hidden;
         }
 
-        /* LOGO VERDE NEÓN */
+        /* LOGO ESTILO DISNEY XD VERDE */
         .logo-xd {
             font-size: 70px;
             color: #00FF00;
             text-shadow: 0 0 15px #00FF00, 0 0 30px #00FF00;
             font-style: italic;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             text-transform: uppercase;
+            letter-spacing: -2px;
         }
 
         .menu {
             display: flex;
             flex-direction: column;
             gap: 15px;
-            width: 280px;
+            width: 300px;
         }
 
+        /* BOTONES PRINCIPALES */
         .btn {
             background: #00FF00;
             color: black;
-            padding: 15px;
+            padding: 18px;
             border: none;
-            border-radius: 10px;
-            font-size: 18px;
+            border-radius: 12px;
+            font-size: 20px;
             font-weight: bold;
             cursor: pointer;
             text-decoration: none;
             text-align: center;
-            transition: 0.3s;
+            transition: 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3);
         }
 
-        .btn:hover { background: white; transform: scale(1.05); }
+        .btn:hover {
+            background: white;
+            transform: scale(1.05);
+            box-shadow: 0 0 25px #00FF00;
+        }
 
-        /* --- VENTANA DEL JUEGO (EL FRAME) --- */
+        /* PANEL DE LISTA DE JUEGOS */
+        #lista-juegos {
+            display: none;
+            margin-top: 15px;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid #00FF00;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+        }
+
+        .btn-game {
+            display: block;
+            background: #2b4f8a;
+            color: white;
+            padding: 12px;
+            margin: 8px 0;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 8px;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+            font-family: sans-serif;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .btn-game:hover {
+            background: #00FF00;
+            color: black;
+        }
+
+        /* VENTANILLA DEL JUEGO (EL POP-UP) */
         #game-window {
-            display: none; /* Oculto al principio */
+            display: none;
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 90%;
-            height: 85%;
+            width: 95%;
+            height: 90%;
             background: #000;
-            border: 4px solid #00FF00;
-            border-radius: 15px;
-            z-index: 100;
-            box-shadow: 0 0 50px rgba(0, 255, 0, 0.5);
+            border: 5px solid #00FF00;
+            border-radius: 20px;
+            z-index: 1000;
+            box-shadow: 0 0 100px rgba(0, 0, 0, 1);
         }
 
-        /* BOTÓN DE CERRAR VENTANA */
+        /* BOTÓN CERRAR VENTANILLA */
         #close-btn {
             position: absolute;
-            top: -15px;
-            right: -15px;
-            background: red;
+            top: -20px;
+            right: -20px;
+            background: #ff0000;
             color: white;
-            border: 2px solid white;
+            border: 3px solid white;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
+            font-size: 24px;
             font-weight: bold;
             cursor: pointer;
-            z-index: 101;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+        }
+
+        #close-btn:hover {
+            background: #b30000;
+            transform: scale(1.1);
         }
 
         iframe {
             width: 100%;
             height: 100%;
             border: none;
-            border-radius: 10px;
-        }
-
-        /* LISTA DE BOTONES DE JUEGOS */
-        #lista-juegos {
-            display: none;
-            margin-top: 15px;
-            background: rgba(0,0,0,0.8);
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid #00FF00;
-        }
-
-        .btn-mini {
-            display: block;
-            background: #2b4f8a;
-            color: white;
-            padding: 8px;
-            margin: 5px 0;
-            text-decoration: none;
-            font-size: 14px;
-            border-radius: 5px;
-            border: none;
-            width: 100%;
-            cursor: pointer;
+            border-radius: 15px;
         }
     </style>
 </head>
@@ -126,38 +153,43 @@
     <div class="menu">
         <a href="https://sites.google.com/view/disneyxdlatam/minecraft-1-18" class="btn">Ver Disney XD</a>
         
-        <button class="btn" onclick="mostrarMenuJuegos()">🎮 Juegos</button>
+        <button class="btn" onclick="toggleMenuJuegos()">🎮 Juegos</button>
 
         <div id="lista-juegos">
-            <button class="btn-mini" onclick="abrirJuego('https://eaglercraft.com/mc/1.8.8')">Eaglercraft 1.8.8</button>
-            <button class="btn-mini" onclick="abrirJuego('https://www.retrogames.cc/embed/40237-sonic-the-hedgehog-2-world.html')">Sonic Retro</button>
-            <button class="btn-mini" onclick="abrirJuego('https://sites.google.com/site/unblockedgames77/power-rangers')">Power Rangers</button>
+            <button class="btn-game" onclick="abrirVentanilla('https://www.todojuegosgratis.es/juego/pucca-jumping-rope')">PUCCA: JUMPING ROPE</button>
+            <button class="btn-game" onclick="abrirVentanilla('https://eaglercraft.com/mc/1.8.8')">EAGLERCRAFT</button>
         </div>
     </div>
 
     <div id="game-window">
-        <button id="close-btn" onclick="cerrarJuego()">X</button>
+        <button id="close-btn" onclick="cerrarVentanilla()">X</button>
         <iframe id="game-frame" src=""></iframe>
     </div>
 
     <script>
-        // Muestra u oculta la lista de botones
-        function mostrarMenuJuegos() {
-            let menu = document.getElementById('lista-juegos');
+        // Mostrar u ocultar la lista de juegos
+        function toggleMenuJuegos() {
+            const menu = document.getElementById('lista-juegos');
             menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
         }
 
-        // Función para abrir el juego en la ventana
-        function abrirJuego(url) {
-            document.getElementById('game-frame').src = url;
-            document.getElementById('game-window').style.display = 'block';
+        // Abrir el juego en la ventanilla
+        function abrirVentanilla(url) {
+            const windowDiv = document.getElementById('game-window');
+            const frame = document.getElementById('game-frame');
+            
+            frame.src = url;
+            windowDiv.style.display = 'block';
             document.getElementById('lista-juegos').style.display = 'none';
         }
 
-        // Función para cerrar y detener el juego
-        function cerrarJuego() {
-            document.getElementById('game-window').style.display = 'none';
-            document.getElementById('game-frame').src = ""; // Esto apaga el sonido del juego al cerrar
+        // Cerrar la ventanilla y apagar el juego
+        function cerrarVentanilla() {
+            const windowDiv = document.getElementById('game-window');
+            const frame = document.getElementById('game-frame');
+            
+            windowDiv.style.display = 'none';
+            frame.src = ""; // Esto detiene el sonido y la carga
         }
     </script>
 
